@@ -1,0 +1,100 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+void quickSort(string *Arryf,int left, int right);
+int main ()
+{	
+	int amount=0;
+	char *word=new char [amount];
+	
+	ifstream file;
+	file.open("/home/louisa/louisa/l3/lui.txt");
+	if (!file)
+	{
+		cout<<"it's not opened:("<<endl;
+	}
+	else
+	{
+		cout<<"it's opened :)"<<endl;
+		char letters;
+		while (file.get(letters))
+		{
+			word[amount]=letters;
+			amount++;
+		}
+		amount=(amount-1);
+	string *Arryf=new string[amount];
+	
+	for (int i=0;i<amount;i++)
+	{
+		Arryf[i]=string(word);
+		char end=word[0];
+		for (int shift=0;shift<(amount-1);shift++)
+		{
+			
+			word[shift]=word[shift+1];
+		}
+		word[amount-1]=end;
+	}
+	
+	for (int cou=0;cou<amount;cou++)
+	{cout<<Arryf[cou]<<"\n";}
+	delete [] word;
+
+	for (int w=0;w<amount;w++)
+	{
+		for(int l=0;l<(amount-1)/2;l++)
+		{
+			swap (Arryf[w][l],Arryf[w][amount-(l+2)]);
+		}
+		
+	}
+
+cout<<"\n\n\n";
+quickSort(Arryf, 0, amount-1);
+	
+	for (int cc=0;cc<amount;cc++)
+	{
+		cout<<Arryf[cc]<<endl;
+	}
+	
+	delete [] Arryf;	
+	}
+	
+	file.close ();
+	return 0;
+}
+void quickSort(string *Arryf,int left, int right)
+{
+	 string pivot; // разрешающий элемент
+  int l_hold = left; //левая граница
+  int r_hold = right; // правая граница
+  pivot = Arryf[left];
+  while (left < right) // пока границы не сомкнутся
+  {
+    while ((Arryf[right] >= pivot) && (left < right))
+      right--; // сдвигаем правую границу пока элемент [right] больше [pivot]
+    if (left != right) // если границы не сомкнулись
+    {
+      Arryf[left] = Arryf[right]; // перемещаем элемент [right] на место разрешающего
+      left++; // сдвигаем левую границу вправо
+    }
+    while ((Arryf[left] <= pivot) && (left < right))
+      left++; // сдвигаем левую границу пока элемент [left] меньше [pivot]
+    if (left != right) // если границы не сомкнулись
+    {
+      Arryf[right] = Arryf[left]; // перемещаем элемент [left] на место [right]
+      right--; // сдвигаем правую границу вправо
+    }
+  }
+  Arryf[left] = pivot; // ставим разрешающий элемент на место
+  pivot = left;
+  left = l_hold;
+  right = r_hold;
+  if (left < pivot) // Рекурсивно вызываем сортировку для левой и правой части массива
+    quickSort(Arryf, left, pivot - 1);
+  if (right > pivot)
+    quickSort(Arryf, pivot + 1, right);
+}
+
